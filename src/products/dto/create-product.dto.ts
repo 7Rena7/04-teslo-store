@@ -36,7 +36,7 @@ export class CreateProductDto {
 
   @IsString({ each: true })
   @IsArray()
-  readonly sizes: number[];
+  readonly sizes: string[];
 
   @IsString()
   @IsIn(GENDERS)
@@ -44,5 +44,11 @@ export class CreateProductDto {
 
   @IsString({ each: true })
   @IsArray()
-  readonly tags: string;
+  @IsOptional()
+  readonly tags: string[];
+
+  @IsString({ each: true })
+  @IsArray()
+  @IsOptional()
+  readonly images: string[];
 }

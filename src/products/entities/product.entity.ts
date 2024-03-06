@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from 'typeorm';
+import { ProductImage } from './';
 
-@Entity()
+@Entity({ name: 'products' })
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -39,7 +41,7 @@ export class Product {
   @Column('text', {
     array: true,
   })
-  sizes: number[];
+  sizes: string[];
 
   @Column('text')
   gender: string;
@@ -48,10 +50,13 @@ export class Product {
     array: true,
     default: [],
   })
-  tags: string;
+  tags: string[];
 
-  // @Column('text')
-  // images: string;
+  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+    cascade: true,
+    eager: true,
+  })
+  images?: ProductImage[];
 
   @Column({ default: true })
   isActive: boolean;
