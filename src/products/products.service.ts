@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { DataSource, Repository } from 'typeorm';
@@ -12,7 +6,7 @@ import { validate as validateUUID } from 'uuid';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product, ProductImage } from './entities';
-import { ValidSizes } from './types/types';
+import { CommonService } from 'src/common/common.service';
 
 type FormattedProduct = {
   images: string[];
@@ -38,6 +32,7 @@ export class ProductsService {
     @InjectRepository(ProductImage)
     private readonly productImageRespository: Repository<ProductImage>,
     private readonly dataSource: DataSource,
+    private readonly commonService: CommonService,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
@@ -53,7 +48,11 @@ export class ProductsService {
       await this.productsRepository.save(product);
       return { ...product, images };
     } catch (error) {
-      this.handleDBExceptions(error, createProductDto);
+      this.commonService.handleDBExceptions(
+        error,
+        this.logger,
+        createProductDto,
+      );
     }
   }
 
@@ -72,7 +71,7 @@ export class ProductsService {
 
       return { count, formattedProducts };
     } catch (error) {
-      this.handleDBExceptions(error);
+      this.commonService.handleDBExceptions(error, this.logger);
     }
   }
 
@@ -100,7 +99,7 @@ export class ProductsService {
 
       return { ...product, images: product.images.map((img) => img.url) };
     } catch (error) {
-      this.handleDBExceptions(error);
+      this.commonService.handleDBExceptions(error, this.logger);
     }
   }
 
@@ -138,7 +137,7 @@ export class ProductsService {
     } catch (error) {
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
-      this.handleDBExceptions(error);
+      this.commonService.handleDBExceptions(error, this.logger);
     }
   }
 
@@ -150,7 +149,7 @@ export class ProductsService {
           `No product found with the provided id ${id}`,
         );
     } catch (error) {
-      this.handleDBExceptions(error);
+      this.commonService.handleDBExceptions(error, this.logger);
     }
   }
 
@@ -161,22 +160,13 @@ export class ProductsService {
     }));
   }
 
-  private handleDBExceptions(error: any, dto?: any) {
-    if (error.code === '23505') throw new BadRequestException(error.detail);
-    if (error.status === 400) throw new BadRequestException(error.message);
-    if (error.status === 404) throw new NotFoundException(error.message);
-    if (error.status) console.log(error.status);
-    this.logger.error(error, [error.detail, dto]);
-    throw new InternalServerErrorException('Unexpected error occurred.');
-  }
-
   async deleteAllProducts() {
     const query = this.productsRepository.createQueryBuilder('product');
 
     try {
       return await query.delete().where({}).execute();
     } catch (error) {
-      this.handleDBExceptions(error);
+      this.commonService.handleDBExceptions(error, this.logger);
     }
   }
 }
