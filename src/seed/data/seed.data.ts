@@ -1,3 +1,6 @@
+import { UserRole } from 'src/users/entities/user.entity';
+import * as bcrypt from 'bcrypt';
+
 interface SeedProduct {
   description: string;
   images: string[];
@@ -14,11 +17,47 @@ interface SeedProduct {
 type ValidSizes = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
 type ValidTypes = 'shirts' | 'pants' | 'hoodies' | 'hats';
 
+export interface SeedUser {
+  firstName: string;
+  lastName: string;
+  dob: Date;
+  email: string;
+  password: string;
+  roles: UserRole[];
+}
+
 interface SeedData {
+  users: SeedUser[];
   products: SeedProduct[];
 }
 
 export const initialData: SeedData = {
+  users: [
+    {
+      firstName: 'John',
+      lastName: 'Doe',
+      dob: new Date('1990-01-01'),
+      email: 'test1@test.com',
+      password: bcrypt.hashSync('Password123!', 10),
+      roles: [UserRole.ADMIN],
+    },
+    {
+      firstName: 'Jane',
+      lastName: 'Doe',
+      dob: new Date('1991-01-01'),
+      email: 'test2@test.com',
+      password: bcrypt.hashSync('Password123!', 10),
+      roles: [UserRole.USER],
+    },
+    {
+      firstName: 'Steve',
+      lastName: 'Wozniak',
+      dob: new Date('1988-01-01'),
+      email: 'test3@test.com',
+      password: bcrypt.hashSync('Password123!', 10),
+      roles: [UserRole.USER, UserRole.ADMIN, UserRole.GHOST],
+    },
+  ],
   products: [
     {
       description:

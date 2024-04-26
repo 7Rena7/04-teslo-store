@@ -5,8 +5,10 @@ import {
   BeforeInsert,
   BeforeUpdate,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { ProductImage } from './';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -58,7 +60,10 @@ export class Product {
   })
   images?: ProductImage[];
 
-  @Column({ default: true })
+  @ManyToOne(() => User, (user) => user.product, { eager: true })
+  user: User;
+
+  @Column('bool', { default: true })
   isActive: boolean;
 
   @BeforeInsert()

@@ -5,6 +5,7 @@ export const appConfigValidationSchema = Joi.object({
     .valid('development', 'production', 'test', 'provision')
     .default('development'),
   PORT: Joi.number().default(3000),
+  JWT_SECRET: Joi.string().required(),
   POSTGRES_HOST: Joi.string().required().default('localhost'),
   POSTGRES_PORT: Joi.number().required().default(3000),
   POSTGRES_USERNAME: Joi.string().required().default('postgres'),

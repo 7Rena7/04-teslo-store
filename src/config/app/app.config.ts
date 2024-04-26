@@ -1,6 +1,7 @@
 export const AppEnvConfiguration = () => ({
   environment: process.env.ENV || 'development',
   port: process.env.PORT || 3000,
+  jwtSecret: process.env.JWT_SECRET,
   postgresHost: process.env.POSGRES_HOST || 'localhost',
   postgresPort: process.env.POSTGRES_PORT || 3000,
   postgresUsername: process.env.POSTGRES_USERNAME || 'postgres',

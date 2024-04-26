@@ -6,18 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class CreateUserDto {
-  @IsString()
-  @MinLength(2)
-  readonly firstName: string;
-
-  @IsString()
-  @MinLength(2)
-  readonly lastName: string;
-
-  @IsString()
-  readonly dob: string;
-
+export class LoginUserDto {
   @IsString()
   @MinLength(5)
   @IsEmail()

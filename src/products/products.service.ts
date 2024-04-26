@@ -7,6 +7,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product, ProductImage } from './entities';
 import { CommonService } from 'src/common/common.service';
+import { User } from 'src/users/entities/user.entity';
 
 type FormattedProduct = {
   images: string[];
@@ -35,7 +36,7 @@ export class ProductsService {
     private readonly commonService: CommonService,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, user: User) {
     try {
       const { images = [], ...productDetails } = createProductDto;
 
@@ -44,6 +45,7 @@ export class ProductsService {
         images: images.map((image) =>
           this.productImageRespository.create({ url: image }),
         ),
+        user,
       });
       await this.productsRepository.save(product);
       return { ...product, images };
@@ -103,7 +105,7 @@ export class ProductsService {
     }
   }
 
-  async update(id: string, { images, ...rest }: UpdateProductDto) {
+  async update(id: string, { images, ...rest }: UpdateProductDto, user: User) {
     const product = await this.productsRepository.preload({
       id,
       ...rest,
@@ -126,6 +128,7 @@ export class ProductsService {
         );
       }
 
+      product.user = user;
       await queryRunner.manager.save(product);
       await queryRunner.commitTransaction();
       await queryRunner.release();
