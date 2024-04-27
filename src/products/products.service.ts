@@ -71,7 +71,7 @@ export class ProductsService {
 
       const formattedProducts = this.formatProductsImages(products);
 
-      return { count, formattedProducts };
+      return { count, products: formattedProducts };
     } catch (error) {
       this.commonService.handleDBExceptions(error, this.logger);
     }

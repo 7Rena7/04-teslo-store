@@ -1,26 +1,42 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseUUIDPipe,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Auth, GetUser } from 'src/users/decorators';
-import { ValidRoles } from 'src/users/interfaces';
 import { User } from 'src/users/entities/user.entity';
+import { ValidRoles } from 'src/users/interfaces';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { Product } from './entities';
+import { ProductsService } from './products.service';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @ApiResponse({ status: 201, description: 'Product created', type: Product })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request, check response message for more information',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized. JWT Token related issue.',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden. User does not have the required role.',
+  })
   @Post()
   @Auth(ValidRoles.admin)
   create(@Body() createProductDto: CreateProductDto, @GetUser() user: User) {
