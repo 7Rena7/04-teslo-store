@@ -12,6 +12,7 @@ import { Product } from './products/entities/product.entity';
 import { ProductsModule } from './products/products.module';
 import { SeedModule } from './seed/seed.module';
 import { UsersModule } from './users/users.module';
+import { MessagesWsModule } from './messages-ws/messages-ws.module';
 
 @Module({
   imports: [
@@ -48,6 +49,8 @@ import { UsersModule } from './users/users.module';
     SeedModule,
 
     FilesModule,
+
+    MessagesWsModule,
   ],
 })
 export class AppModule {
