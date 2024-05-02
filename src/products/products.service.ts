@@ -6,7 +6,7 @@ import { validate as validateUUID } from 'uuid';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product, ProductImage } from './entities';
-import { CommonService } from 'src/common/common.service';
+import { CommonService } from '../common/common.service';
 import { User } from 'src/users/entities/user.entity';
 
 type FormattedProduct = {

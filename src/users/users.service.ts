@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { CommonService } from 'src/common/common.service';
+import { CommonService } from '../common/common.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto/';
 import { User } from './entities/user.entity';

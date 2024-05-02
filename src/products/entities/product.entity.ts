@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { ProductImage } from './';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { GENDERS } from '../dto/create-product.dto';
 

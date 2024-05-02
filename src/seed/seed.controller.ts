@@ -12,4 +12,9 @@ export class SeedController {
   executeSeed() {
     return this.seedService.executeSeed();
   }
+
+  @Get('test')
+  test() {
+    return 'test';
+  }
 }

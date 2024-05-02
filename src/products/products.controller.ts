@@ -10,10 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { Auth, GetUser } from 'src/users/decorators';
-import { User } from 'src/users/entities/user.entity';
-import { ValidRoles } from 'src/users/interfaces';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { Auth, GetUser } from '../users/decorators';
+import { User } from '../users/entities/user.entity';
+import { ValidRoles } from '../users/interfaces';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities';
